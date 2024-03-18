@@ -7,7 +7,7 @@
 		"context": "..",
 		// Update the 'dockerFile' property if you aren't using the standard 'Dockerfile' filename.
 		"dockerfile": "../Dockerfile"
-	}
+	},
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
@@ -19,7 +19,28 @@
 	// "postCreateCommand": "cat /etc/os-release",
 
 	// Configure tool-specific properties.
-	// "customizations": {},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-azuretools.vscode-docker",
+				"neilding.language-liquid",
+				"killalau.vscode-liquid-snippets",
+				"eliostruyf.vscode-front-matter",
+				"github.vscode-github-actions",
+				"eamodio.gitlens",
+				"ms-toolsai.jupyter",
+				"ms-toolsai.vscode-jupyter-cell-tags",
+				"ms-toolsai.jupyter-renderers",
+				"ms-toolsai.vscode-jupyter-powertoys",
+				"ms-toolsai.vscode-jupyter-slideshow",
+				"yzhang.markdown-all-in-one",
+				"Postman.postman-for-vscode",
+				"ms-python.python",
+				"ms-python.vscode-pylance",
+				"ms-python.debugpy"
+			]
+		}
+	}
 
 	// Uncomment to connect as an existing user other than the container default. More info: https://aka.ms/dev-containers-non-root.
 	// "remoteUser": "devcontainer"
