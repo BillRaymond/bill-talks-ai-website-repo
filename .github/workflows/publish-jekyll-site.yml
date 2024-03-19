@@ -23,7 +23,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         repository: 'BillRaymond/bill-talks-ai-website'
-        token: ${{ secrets.JEKYLLNEW_PAT }}
+        token: ${{ secrets.BILL_TALKS_AI_PAT }}
         path: 'destination-repo'
 
     - name: Copy Site Files
