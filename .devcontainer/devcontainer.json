@@ -23,8 +23,6 @@
 		"vscode": {
 			"extensions": [
 				"ms-azuretools.vscode-docker",
-				"neilding.language-liquid",
-				"killalau.vscode-liquid-snippets",
 				"eliostruyf.vscode-front-matter",
 				"github.vscode-github-actions",
 				"eamodio.gitlens",
@@ -37,7 +35,9 @@
 				"Postman.postman-for-vscode",
 				"ms-python.python",
 				"ms-python.vscode-pylance",
-				"ms-python.debugpy"
+				"ms-python.debugpy",
+				"golang.Go",
+				"budparr.language-hugo-vscode"
 			]
 		}
 	}
