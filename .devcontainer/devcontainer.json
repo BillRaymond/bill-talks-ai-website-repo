@@ -38,7 +38,8 @@
 				"ms-python.debugpy",
 				"golang.Go",
 				"budparr.language-hugo-vscode",
-				"tamasfe.even-better-toml"
+				"tamasfe.even-better-toml",
+				"akmittal.hugofy"
 			]
 		}
 	}
