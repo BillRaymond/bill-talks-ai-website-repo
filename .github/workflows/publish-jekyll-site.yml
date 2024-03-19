@@ -1,38 +1,46 @@
-name: Publish Jekyll Site to GitHub Pages
+name: Build and Deploy Jekyll Site
 
 on:
+  schedule:
+    - cron: '0 0 * * *'  # Runs at 12 midnight GMT every night
   push:
     branches:
-      - main  # Or your default branch
+      - main
+
+# Using concurrency to ensure only the latest run is executed for a given branch
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
-    - name: Checkout Source Repository
-      uses: actions/checkout@v2
-      with:
-        path: 'source-repo'
+      - name: Check out source repository
+        uses: actions/checkout@v2
+        with:
+          repository: 'BillRaymond/bill-talks-ai-website-repo'
 
-    - name: Setup Git for Deployment
-      run: |
-        git config --global "user.name" "Bill Raymond"
-        git config --global user.email "bill.raymond@cambermast.com"
+      - name: Build the Docker image
+        run: docker build . -t jekyll-builder
 
-    - name: Checkout Destination Repository
-      uses: actions/checkout@v2
-      with:
-        repository: 'BillRaymond/bill-talks-ai-website'
-        token: ${{ secrets.BILL_TALKS_AI_PAT }}
-        path: 'destination-repo'
+      - name: Prepare and Build Jekyll Site
+        run: |
+          docker run --name jekyll-site jekyll-builder sh -c "bundle install && bundle update && bundle exec jekyll build"
+          docker cp jekyll-site:/workspaces/bill-talks-ai-website-repo/website/_site ./_site
 
-    - name: Copy Site Files
-      run: |
-        rsync -av --progress source-repo/website/_site/ destination-repo/ --exclude .git
+      - name: Check out GitHub Pages repository
+        uses: actions/checkout@v2
+        with:
+          repository: 'BillRaymond/bill-talks-ai-website'
+          token: ${{ secrets.BILL_TALKS_AI_PAT }}
 
-    - name: Commit and Push to Destination Repository
-      run: |
-        cd destination-repo
-        git add .
-        git commit -m "Update Jekyll site"
-        git push
+      - name: Copy site output to GitHub Pages repository
+        run: |
+          cp -r ./_site/* ./
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add .
+          git commit -m "Deploy Jekyll site" -a || echo "No changes to commit"
+          git push
