@@ -27,7 +27,7 @@ jobs:
 
       - name: Prepare and Build Jekyll Site
         run: |
-          docker run --name jekyll-site jekyll-builder sh -c "bundle install && bundle update && bundle exec jekyll build"
+          docker run --name jekyll-site jekyll-builder sh -c "cd website && bundle install && bundle update && bundle exec jekyll build"
           docker cp jekyll-site:/workspaces/bill-talks-ai-website-repo/website/_site ./_site
 
       - name: Check out GitHub Pages repository
