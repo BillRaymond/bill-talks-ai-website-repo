@@ -37,7 +37,8 @@
 				"ms-python.vscode-pylance",
 				"ms-python.debugpy",
 				"golang.Go",
-				"budparr.language-hugo-vscode"
+				"budparr.language-hugo-vscode",
+				"tamasfe.even-better-toml"
 			]
 		}
 	}
