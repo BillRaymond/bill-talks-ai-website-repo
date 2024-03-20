@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Build Docker Image
         run: docker build . -t hugo-site
@@ -20,11 +20,12 @@ jobs:
           docker run --name hugo-build -v ${{ github.workspace }}/public:/app/public hugo-site /bin/bash -c "npm install bootstrap && hugo"
 
       - name: Deploy to GitHub Pages repository
-        uses: crazy-max/ghaction-github-pages@v2
+        uses: crazy-max/ghaction-github-pages@v4
         with:
-          target_repository: BillRaymond/bill-talks-ai-website  # Replace with your GitHub username
+          repo: BillRaymond/bill-talks-ai-website  # Replace with your GitHub username
           target_branch: main  # The branch of your website repo to push to
           build_dir: public  # Hugo's default output directory
           keep_history: false  # Set to true to keep commit history, or false to squash
           commit_message: Deploy Hugo site update
-          github_token: ${{ secrets.BILL_TALKS_AI_PAT }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.BILL_TALKS_AI_PAT }}
