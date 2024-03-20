@@ -21,7 +21,7 @@ jobs:
       - name: Deploy to GitHub Pages repository
         uses: crazy-max/ghaction-github-pages@v2
         with:
-          target_repository: yourusername/bill-talks-ai-website  # Replace 'yourusername' with your actual GitHub username
+          target_repository: BillRaymond/bill-talks-ai-website  # Replace 'yourusername' with your actual GitHub username
           target_branch: main  # The branch of your website repo to push to
           build_dir: public  # Hugo's default output directory
           keep_history: false  # Set to true to keep commit history, or false to squash
