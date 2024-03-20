@@ -1,0 +1,32 @@
+name: Deploy Hugo Site
+
+on:
+  push:
+    branches:
+      - main  # Set this to your default branch
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: 'latest'
+          extended: true
+
+      - name: Build Hugo site
+        run: hugo --minify
+
+      - name: Deploy to GitHub Pages repository
+        uses: crazy-max/ghaction-github-pages@v2
+        with:
+          target_repository: yourusername/bill-talks-ai-website  # Replace 'yourusername' with your actual GitHub username
+          target_branch: main  # The branch of your website repo to push to
+          build_dir: public  # Hugo's default output directory
+          keep_history: false  # Set to true to keep commit history, or false to squash
+          commit_message: Deploy Hugo site update
+          github_token: ${{ secrets.BILL_TALKS_AI_PAT }}
