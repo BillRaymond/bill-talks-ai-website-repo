@@ -16,7 +16,7 @@ jobs:
         run: npm install bootstrap
 
       - name: Build Hugo site
-        run: hugo --minify
+        run: hugo
 
       - name: Deploy to GitHub Pages repository
         uses: crazy-max/ghaction-github-pages@v2
