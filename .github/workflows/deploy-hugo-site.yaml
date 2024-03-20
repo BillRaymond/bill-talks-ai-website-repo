@@ -13,8 +13,8 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install npm dependencies
-        run: npm install
-        
+        run: npm install bootstrap
+
       - name: Build Hugo site
         run: hugo --minify
 
