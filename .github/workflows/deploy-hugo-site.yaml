@@ -2,8 +2,12 @@ name: Deploy Hugo Site
 
 on:
   push:
-    branches:
-      - main  # Set this to your default branch
+    branches: [ "main" ]
+  workflow_dispatch: # you can trigger the workflow manually
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true # this workflow stops other concurrent workflows from running
 
 jobs:
   build-and-deploy:
@@ -17,7 +21,7 @@ jobs:
 
       - name: Run Hugo with npm dependencies within Docker Container
         run: |
-          docker run --name hugo-build -v ${{ github.workspace }}/public:/app/public hugo-site /bin/bash -c "npm install bootstrap && hugo"
+         docker run --name hugo-build -v /home/runner/work/bill-talks-ai-website-repo/bill-talks-ai-website-repo/public:/app/public hugo-site /bin/bash -c "npm cache clean --force && npm install bootstrap && hugo"
 
       - name: Deploy to GitHub Pages repository
         uses: crazy-max/ghaction-github-pages@v4
