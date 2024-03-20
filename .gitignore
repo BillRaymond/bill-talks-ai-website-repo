@@ -201,7 +201,10 @@ cython_debug/
 #.idea/
 
 # **** Node
-node_modules/
+#      TODO: fix the GH Action so this is not required
+#            currently, you would have to run npm install bootstrap first
+#            but that does not work in the current incarnation of the GitHub Action
+# node_modules/
 
 # **** macOS related
 .DS_Store
