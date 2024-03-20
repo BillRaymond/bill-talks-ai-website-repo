@@ -15,8 +15,9 @@ jobs:
       - name: Build Docker Image
         run: docker build . -t hugo-site
 
-      - name: Run Hugo within Docker Container
-        run: docker run --name hugo-build -v ${{ github.workspace }}/public:/app/public hugo-site hugo
+      - name: Run Hugo with npm dependencies within Docker Container
+        run: |
+          docker run --name hugo-build -v ${{ github.workspace }}/public:/app/public hugo-site /bin/bash -c "npm install bootstrap && hugo"
 
       - name: Deploy to GitHub Pages repository
         uses: crazy-max/ghaction-github-pages@v2
