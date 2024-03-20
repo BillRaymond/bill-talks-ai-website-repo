@@ -1,3 +1,8 @@
+// If you want to override Boostrap settings, do that here. Examples:
+// $body-bg: #ff0000;
+// $body-color: #00b7ff;
+
+@import "override";
 @import "../../../../node_modules/bootstrap/scss/bootstrap";
 
 /* This is code that Hugo created initially. Uncomment if needed

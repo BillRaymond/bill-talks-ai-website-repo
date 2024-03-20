@@ -7,3 +7,8 @@ production:
 languageCode: "en-us"
 title: "Bill Talks AI"
 theme: "bill-talks-ai"
+
+module:
+  mounts:
+    - source: "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+      target: "assets/js/bootstrap.bundle.min.js"

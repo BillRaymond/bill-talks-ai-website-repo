@@ -15,5 +15,11 @@
   <footer>
     {{ partial "footer.html" . }}
   </footer>
+  <script src="/js/script.js"></script>
+  {{/*  Begin: Bootstrap linking (see hugo.yaml)  */}}
+  {{ $bootstrap := resources.Get "js/bootstrap.bundle.min.js" }}
+  {{ $js := slice $bootstrap | resources.Concat "js/bundle.js" | resources.Minify }}
+  <script src="{{$js.RelPermalink}}" defer></script>
+  {{/*  Begin: Bootstrap linking (see hugo.yaml)  */}}
 </body>
 </html>
