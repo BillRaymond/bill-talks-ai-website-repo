@@ -12,12 +12,9 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v2
 
-      - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v2
-        with:
-          hugo-version: 'latest'
-          extended: true
-
+      - name: Install npm dependencies
+        run: npm install
+        
       - name: Build Hugo site
         run: hugo --minify
 
