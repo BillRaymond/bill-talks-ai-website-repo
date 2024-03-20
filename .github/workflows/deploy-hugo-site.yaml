@@ -12,16 +12,16 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v2
 
-      - name: Install npm dependencies
-        run: npm install bootstrap
+      - name: Build Docker Image
+        run: docker build . -t hugo-site
 
-      - name: Build Hugo site
-        run: hugo
+      - name: Run Hugo within Docker Container
+        run: docker run --name hugo-build -v ${{ github.workspace }}/public:/app/public hugo-site hugo
 
       - name: Deploy to GitHub Pages repository
         uses: crazy-max/ghaction-github-pages@v2
         with:
-          target_repository: BillRaymond/bill-talks-ai-website  # Replace 'yourusername' with your actual GitHub username
+          target_repository: BillRaymond/bill-talks-ai-website  # Replace with your GitHub username
           target_branch: main  # The branch of your website repo to push to
           build_dir: public  # Hugo's default output directory
           keep_history: false  # Set to true to keep commit history, or false to squash
