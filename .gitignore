@@ -201,7 +201,7 @@ cython_debug/
 #.idea/
 
 # **** Node
-node_modules/
+# node_modules/
 
 # **** macOS related
 .DS_Store
