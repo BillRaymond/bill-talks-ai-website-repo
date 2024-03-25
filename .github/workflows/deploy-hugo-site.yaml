@@ -21,7 +21,7 @@ jobs:
           path: 'source'
 
       - name: Build Hugo Site using Docker
-        uses: docker://billraymond/billtalksaiimage:latest
+        uses: docker://billraymond/bill-talks-ai-docker-image:latest
         with:
           args: hugo -s source/ -d public
 
@@ -35,11 +35,11 @@ jobs:
       - name: Clear previous site content
         run: |
           rm -rf target/*
-          
+
       - name: Copy new site to target repo
         run: |
           cp -r source/public/* target/
-          
+
       - name: Commit and Force Push to Target Repo
         run: |
           cd target
@@ -48,4 +48,3 @@ jobs:
           git add .
           git commit -m "Deploy Hugo site" || echo "No changes to commit."
           git push --force
-
