@@ -1,0 +1,9 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf "%s | %s" .Title site.Title }}{{ end }}</title>
+{{ partialCached "head/css.html" . }}
+{{ partialCached "head/js.html" . }}
+<!-- begin add bootstrap css assets -->
+{{ $bootstrapCSS := resources.Get "/node_modules/bootstrap/dist/css/bootstrap.min.css" }}
+<link rel="stylesheet" href="{{ $bootstrapCSS.Permalink }}">
+<!-- end add bootstrap css assets -->

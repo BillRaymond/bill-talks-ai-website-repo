@@ -1,0 +1,10 @@
+baseURL: 'https://bill-talks-ai.com/'
+languageCode: 'en-us'
+title: 'Bill Talks AI'
+theme: 'bill-talks-ai'
+
+# Process the main.js file with webpack and generate a bundled JavaScript file main.bundle.js.
+module:
+  mounts:
+    - source: node_modules
+      target: assets/node_modules
