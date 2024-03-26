@@ -28,5 +28,5 @@ jobs:
       run: |
         docker run --name temp-container -v ${{ github.workspace }}:${{ env.WORKSPACE_PATH }}${{ env.REPO_NAME }} my-custom-image:latest /bin/bash -c "\
           cd ${{ env.WORKSPACE_PATH }}${{ env.REPO_NAME }} && 
-          echo 'Here is a list of the files in ${{ env.WORKSPACE_PATH }}${{ env.REPO_NAME }}' \
+          echo 'Here is a list of the files in ${{ env.WORKSPACE_PATH }}${{ env.REPO_NAME }}' && \
           ls -la"
