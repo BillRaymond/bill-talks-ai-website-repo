@@ -5,6 +5,10 @@ on: [push, pull_request]
 jobs:
   build-and-list-contents:
     runs-on: ubuntu-latest
+    # Define environment variables for use in this job
+    env:
+      WORKSPACE_PATH: /workspaces/
+      REPO_NAME: ${{ github.event.repository.name }}
 
     steps:
     - name: Checkout repository
@@ -23,4 +27,4 @@ jobs:
 
     - name: Run Docker container and list workspace contents
       run: |
-        docker run --name temp-container -v ${{ github.workspace }}:/workspaces/bill-talks-ai-website-repo my-custom-image:latest ls -la /workspaces/bill-talks-ai-website-repo
+        docker run --name temp-container -v ${{ github.workspace }}:${{ env.WORKSPACE_PATH }}${{ env.REPO_NAME }} my-custom-image:latest ls -la ${{ env.WORKSPACE_PATH }}${{ env.REPO_NAME }}
