@@ -1,1 +1,1 @@
-FROM billraymond/bill-talks-ai-docker-image:latest
+FROM billraymond/billraymond/bill-talks-ai-docker-image
