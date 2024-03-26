@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: 'BillRaymond/bill-talks-ai-website-repo'
           path: 'source'
@@ -26,7 +26,7 @@ jobs:
           args: hugo -s source/ -d public
 
       - name: Checkout target repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: 'BillRaymond/bill-talks-ai-website'
           token: ${{ secrets.BILL_TALKS_AI_PAT }}
