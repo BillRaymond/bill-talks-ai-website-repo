@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: true # this workflow stops other concurrent workflows from running
 
 jobs:
-  build-and-copy-site-to-prod:
+  build-bill-talks-ai-website:
     runs-on: ubuntu-latest
     env:
       WORKSPACE_PATH: /workspaces/
@@ -51,7 +51,7 @@ jobs:
       uses: actions/checkout@v4
       with:
         repository: 'BillRaymond/bill-talks-ai-website'
-        token: ${{ secrets.TARGET_REPO_ACCESS_TOKEN }}
+        token: ${{ secrets.BILL_TALKS_AI_PAT }}
         path: 'target_repo'
 
     - name: Sync site content to target repository
