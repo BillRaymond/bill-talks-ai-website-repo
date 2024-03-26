@@ -56,10 +56,16 @@ jobs:
 
     - name: Sync site content to target repository
       run: |
+        echo 'rsync'
         rsync -av --delete public/ target_repo/
+        echo 'cd to target_repo'
         cd target_repo
+        echo 'configure git'
         git config user.name 'GitHub Actions'
         git config user.email 'actions@github.com'
+        echo 'git add'
         git add .
+        echo 'git commit'
         git commit -m 'Update site content' || echo "No changes to commit"
+        echo 'git push origin main --force'
         git push origin main --force
