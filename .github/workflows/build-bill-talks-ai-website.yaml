@@ -1,4 +1,4 @@
-name: Build Hugo website
+name: Build Bill Talks AI website
 
 on:
   push:
@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: true # this workflow stops other concurrent workflows from running
 
 jobs:
-  build-and-list-contents:
+  build-and-copy-site-to-prod:
     runs-on: ubuntu-latest
     env:
       WORKSPACE_PATH: /workspaces/

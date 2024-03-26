@@ -1,5 +1,8 @@
-baseURL: 'https://bill-talks-ai.com/'
+baseURL: 'https://billraymond.github.io/bill-talks-ai-website/'
 languageCode: 'en-us'
 title: 'Bill Talks AI'
 theme: 'bill-talks-ai'
 relativeURLS: true
+
+taxonomies:
+  author: authors
