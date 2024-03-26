@@ -2,6 +2,7 @@ baseURL: 'https://bill-talks-ai.com/'
 languageCode: 'en-us'
 title: 'Bill Talks AI'
 theme: 'bill-talks-ai'
+relativeURLS: true
 
 # Process the main.js file with webpack and generate a bundled JavaScript file main.bundle.js.
 module:
