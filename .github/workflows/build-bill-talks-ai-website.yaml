@@ -44,5 +44,22 @@ jobs:
           npm install bootstrap && \
           echo 'Use package.json file to copy bootstrap files to the static folder' && \
           npm run copy-bootstrap && \
-          echo 'Atttempting to build hugo with hugo -s . -d public' && \
+          echo 'Build the Hugo site' && \
           hugo -s . -d public --gc --cleanDestinationDir --minify --logLevel debug"
+
+    - name: Checkout target repository in a separate directory
+      uses: actions/checkout@v4
+      with:
+        repository: 'BillRaymond/bill-talks-ai-website'
+        token: ${{ secrets.TARGET_REPO_ACCESS_TOKEN }}
+        path: 'target_repo'
+
+    - name: Sync site content to target repository
+      run: |
+        rsync -av --delete public/ target_repo/
+        cd target_repo
+        git config user.name 'GitHub Actions'
+        git config user.email 'actions@github.com'
+        git add .
+        git commit -m 'Update site content' || echo "No changes to commit"
+        git push origin main --force
