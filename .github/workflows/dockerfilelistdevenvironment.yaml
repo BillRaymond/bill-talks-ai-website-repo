@@ -36,4 +36,4 @@ jobs:
           echo 'Install Bootstrap just in case files are missing' && \
           npm install bootstrap && \
           echo 'Atttempting to build hugo with hugo -s . -d public' && \
-          hugo -s . -d public --verbose"
+          hugo -s . -d public --logLevel debug"
