@@ -1,39 +1,39 @@
-name: Build and Deploy Hugo Site
+# name: Build and Deploy Hugo Site
 
-on:
-  push:
-    branches:
-      - main
+# on:
+#   push:
+#     branches:
+#       - main
 
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
+# jobs:
+#   build-and-deploy:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v4
 
-      - name: Build the Docker image
-        run: docker build . -t my-hugo-site
+#       - name: Build the Docker image
+#         run: docker build . -t my-hugo-site
 
-      - name: Run Hugo build
-        run: docker run --rm -v ${{ github.workspace }}/public:/app/public my-hugo-site hugo --minify
+#       - name: Run Hugo build
+#         run: docker run --rm -v ${{ github.workspace }}/public:/app/public my-hugo-site hugo --minify
 
-      - name: Checkout target repository
-        uses: actions/checkout@v4
-        with:
-          repository: 'bill-talks-ai/bill-talks-ai-website'
-          token: ${{ secrets.BILL_TALKS_AI_PAT }}
-          path: 'target-repo'
-          ref: 'main'
+#       - name: Checkout target repository
+#         uses: actions/checkout@v4
+#         with:
+#           repository: 'bill-talks-ai/bill-talks-ai-website'
+#           token: ${{ secrets.BILL_TALKS_AI_PAT }}
+#           path: 'target-repo'
+#           ref: 'main'
 
-      - name: Copy public directory to target repository
-        run: |
-          cp -r public/* target-repo/
-          cd target-repo
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          git add .
-          git commit -m "Deploy Hugo site updates" || echo "No changes to commit"
-          git push
+#       - name: Copy public directory to target repository
+#         run: |
+#           cp -r public/* target-repo/
+#           cd target-repo
+#           git config user.name "GitHub Actions"
+#           git config user.email "actions@github.com"
+#           git add .
+#           git commit -m "Deploy Hugo site updates" || echo "No changes to commit"
+#           git push
 
