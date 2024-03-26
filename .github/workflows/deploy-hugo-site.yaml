@@ -1,50 +1,39 @@
-name: Deploy Hugo Site
+name: Build and Deploy Hugo Site
 
 on:
   push:
-  schedule:
-    - cron: '0 0 * * *' # Runs at midnight GMT
-  workflow_dispatch:
-
-concurrency:
-  group: ${{ github.ref }}
-  cancel-in-progress: true
+    branches:
+      - main
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout source repo
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build the Docker image
+        run: docker build . -t my-hugo-site
+
+      - name: Run Hugo build
+        run: docker run --rm -v ${{ github.workspace }}/public:/app/public my-hugo-site hugo --minify
+
+      - name: Checkout target repository
         uses: actions/checkout@v4
         with:
-          repository: 'BillRaymond/bill-talks-ai-website-repo'
-          path: 'source'
-
-      - name: Build Hugo Site using Docker
-        uses: docker://billraymond/bill-talks-ai-docker-image:latest
-        with:
-          args: hugo -s source/ -d public
-
-      - name: Checkout target repo
-        uses: actions/checkout@v4
-        with:
-          repository: 'BillRaymond/bill-talks-ai-website'
+          repository: 'bill-talks-ai/bill-talks-ai-website'
           token: ${{ secrets.BILL_TALKS_AI_PAT }}
-          path: 'target'
+          path: 'target-repo'
+          ref: 'main'
 
-      - name: Clear previous site content
+      - name: Copy public directory to target repository
         run: |
-          rm -rf target/*
-
-      - name: Copy new site to target repo
-        run: |
-          cp -r source/public/* target/
-
-      - name: Commit and Force Push to Target Repo
-        run: |
-          cd target
-          git config user.name "GitHub Action"
-          git config user.email "action@github.com"
+          cp -r public/* target-repo/
+          cd target-repo
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
           git add .
-          git commit -m "Deploy Hugo site" || echo "No changes to commit."
-          git push --force
+          git commit -m "Deploy Hugo site updates" || echo "No changes to commit"
+          git push
+
