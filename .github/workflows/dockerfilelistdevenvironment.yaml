@@ -33,5 +33,7 @@ jobs:
           set -x; \
           echo 'Here is a list of the files in ${{ env.WORKSPACE_PATH }}${{ env.REPO_NAME }}' && \
           ls -la && \
+          echo 'Install Bootstrap just in case files are missing' && \
+          npm install bootstrap && \
           echo 'Atttempting to build hugo with hugo -s . -d public' && \
-          hugo -s . -d public"
+          hugo -s . -d public --verbose"
