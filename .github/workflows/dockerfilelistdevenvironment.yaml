@@ -1,4 +1,4 @@
-name: Dockerfile Content List
+name: Dockerfile Dev Environment List
 
 on: [push, pull_request]
 
@@ -21,6 +21,6 @@ jobs:
         load: true
         tags: my-custom-image:latest
 
-    - name: Run Docker container and list contents
+    - name: Run Docker container and list workspace contents
       run: |
-        docker run --name temp-container my-custom-image:latest ls -la
+        docker run --name temp-container -v ${{ github.workspace }}:/workspaces/bill-talks-ai-website-repo my-custom-image:latest ls -la /workspaces/bill-talks-ai-website-repo
