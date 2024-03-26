@@ -4,6 +4,6 @@
 {{ partialCached "head/css.html" . }}
 {{ partialCached "head/js.html" . }}
 <!-- begin add bootstrap css assets -->
-{{ $bootstrapCSS := resources.Get "/node_modules/bootstrap/dist/css/bootstrap.min.css" }}
+{{ $bootstrapCSS := resources.Get "node_modules/bootstrap/dist/css/bootstrap.min.css" }}
 <link rel="stylesheet" href="{{ $bootstrapCSS.Permalink }}">
 <!-- end add bootstrap css assets -->
