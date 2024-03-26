@@ -28,6 +28,4 @@ jobs:
       run: |
         docker run --name temp-container -v ${{ github.workspace }}:${{ env.WORKSPACE_PATH }}${{ env.REPO_NAME }} my-custom-image:latest /bin/bash -c "\
           cd ${{ env.WORKSPACE_PATH }}${{ env.REPO_NAME }} && \
-          hugo -s . -d public && \
-          echo 'Listing contents of the public directory:' && \
-          ls -la public"
+          ls -la"
