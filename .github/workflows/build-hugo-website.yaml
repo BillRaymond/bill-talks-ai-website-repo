@@ -1,4 +1,4 @@
-name: Dockerfile Dev Environment List
+name: Build Hugo website
 
 on:
   push:
@@ -42,5 +42,7 @@ jobs:
           ls -la && \
           echo 'Install Bootstrap just in case files are missing' && \
           npm install bootstrap && \
+          echo 'Use package.json file to copy bootstrap files to the static folder' && \
+          npm run copy-bootstrap && \
           echo 'Atttempting to build hugo with hugo -s . -d public' && \
           hugo -s . -d public --gc --cleanDestinationDir --minify --logLevel debug"
