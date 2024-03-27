@@ -68,5 +68,5 @@ jobs:
         echo 'git commit'
         git commit -m 'Update site content' || echo "No changes to commit"
         echo 'git push to target_repo'
-        git push https://${{ secrets.BILL_TALKS_AI_PAT }}@github.com/yourusername/yourrepository.git main --force
+        git push https://${{ secrets.BILL_TALKS_AI_PAT }}@github.com/BillRaymond/bill-talks-ai-website.git main --force
 
