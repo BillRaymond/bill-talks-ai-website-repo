@@ -53,7 +53,7 @@ jobs:
         echo 'Use package.json file to copy bootstrap files to the static folder'
         npm run copy-bootstrap
         echo 'Build the Hugo site'
-        hugo -s . -d public --gc --cleanDestinationDir --minify --logLevel debug"
+        hugo -s . -d public --gc --cleanDestinationDir --minify --logLevel debug
 
     
     # - name: Build the Hugo website
