@@ -1,0 +1,17 @@
+name: Test workflow things
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch: # you can trigger the workflow manually
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true # this workflow stops other concurrent workflows from running
+
+jobs:
+    example_job:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Get the repository owner
+          run: echo "Repository owner is ${{ github.repository_owner }}"
