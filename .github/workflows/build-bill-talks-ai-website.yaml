@@ -18,7 +18,8 @@ jobs:
       BILL_TALKS_AI_PAT: ${{ secrets.BILL_TALKS_AI_PAT }} # Secret code created from developer settings
       REPO_OWNER: ${{ github.repository_owner }}
       TARGET_REPO: bill-talks-ai-website
-      BUILD_CONTAINER: temp-image:latest
+      BUILD_TEMP_CONTAINER: temp-container
+      BUILD_TEMP_IMAGE: temp-image:latest
 
     steps:
     - name: Checkout repository
@@ -35,26 +36,28 @@ jobs:
         context: .
         file: ./Dockerfile # Open the dockerfile in this GitHub repo
         load: true
-        tags: ${{ env.BUILD_CONTAINER }} # temporary image name and tag
+        tags: ${{ env.BUILD_TEMP_IMAGE }} # temporary image name and tag
 
     - name: Run Docker container, build with Hugo, and list public contents
       run: |
-        docker run --name temp-container -v ${{ github.workspace }}:${{ env.WORKSPACE_PATH }}${{ env.REPO_NAME }} ${{ env.BUILD_CONTAINER }}
+        docker run --name ${{ env.BUILD_TEMP_CONTAINER }} -v ${{ github.workspace }}:${{ env.WORKSPACE_PATH }}${{ env.REPO_NAME }} ${{ env.BUILD_TEMP_IMAGE }}
           
     - name: Build the Hugo website
       run: |
-        echo 'set -x'
-        set -x;
-        echo cd into the workspace
-        cd ${{ env.WORKSPACE_PATH }}${{ env.REPO_NAME }}
-        echo 'list files in ${{ env.WORKSPACE_PATH }}${{ env.REPO_NAME }}'
-        ls -la
-        echo 'Install Bootstrap just in case files are missing'
-        npm install bootstrap
-        echo 'Use package.json file to copy bootstrap files to the static folder'
-        npm run copy-bootstrap
-        echo 'Build the Hugo site'
-        hugo -s . -d public --gc --cleanDestinationDir --minify --logLevel debug"
+        docker exec -i ${{ env.BUILD_TEMP_CONTAINER }} sh << 'EOF'
+          echo 'set -x'
+          set -x;
+          echo cd into the workspace
+          cd ${{ env.WORKSPACE_PATH }}${{ env.REPO_NAME }}
+          echo 'list files in ${{ env.WORKSPACE_PATH }}${{ env.REPO_NAME }}'
+          ls -la
+          echo 'Install Bootstrap just in case files are missing'
+          npm install bootstrap
+          echo 'Use package.json file to copy bootstrap files to the static folder'
+          npm run copy-bootstrap
+          echo 'Build the Hugo site'
+          hugo -s . -d public --gc --cleanDestinationDir --minify --logLevel debug"
+        EOF
 
     - name: Checkout target repository in a separate directory
       uses: actions/checkout@v4
