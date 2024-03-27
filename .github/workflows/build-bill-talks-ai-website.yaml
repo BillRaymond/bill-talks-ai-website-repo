@@ -56,15 +56,20 @@ jobs:
         path: 'target_repo'
         ref: main
 
-    - name: Sync site content to target repository
+    - name: Sync site content to target repository in the runner
       run: |
         echo 'rsync'
         rsync -av --delete public/ target_repo/
 
+    - name: Set correct git remote
+      run: |
+        cd target_repo
+        git remote set-url origin https://github.com/BillRaymond/bill-talks-ai-website.git
+  
     - name: Custom Push to Target Repository
       run: |
         cd target_repo
-        echo 'Here is a list of the files in /target repo'
+        echo 'List of items in the root /target repo:'
         ls -la
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
