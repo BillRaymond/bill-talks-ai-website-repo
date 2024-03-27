@@ -55,7 +55,7 @@ jobs:
     - name: ls test
       run: |
         echo 'Here is a list of the files:'
-        ls -la &&
+        ls -la
 
     
     # - name: Build the Hugo website
