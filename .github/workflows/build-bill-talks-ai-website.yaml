@@ -12,6 +12,8 @@ concurrency:
 jobs:
   build-bill-talks-ai-website:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # Allows the workflow to write to the target repo
     env:
       WORKSPACE_PATH: /workspaces/ # when the action opens the dockerfile, use this as the top-level folder
       REPO_NAME: ${{ github.event.repository.name }} # when the action opens the dockerfile, use this as the top-level sub-folder
@@ -20,6 +22,7 @@ jobs:
       TARGET_REPO: bill-talks-ai-website
       BUILD_TEMP_CONTAINER: temp-container
       BUILD_TEMP_IMAGE: temp-image:latest
+      WEBSITE_LOCATION: ./public
 
     steps:
     - name: Checkout repository
@@ -41,7 +44,8 @@ jobs:
     - name: Run Docker container, build with Hugo, and list public contents
       run: |
         docker run --name ${{ env.BUILD_TEMP_CONTAINER }} -v ${{ github.workspace }}:${{ env.WORKSPACE_PATH }}${{ env.REPO_NAME }} ${{ env.BUILD_TEMP_IMAGE }} /bin/bash -c "
-          git config --global --add safe.directory ${{ env.WORKSPACE_PATH }}${{ env.REPO_NAME }} # make it okay to run git commands here
+          echo 'Make it okay to run git commands in the source folder'
+          git config --global --add safe.directory ${{ env.WORKSPACE_PATH }}${{ env.REPO_NAME }}
           cd ${{ env.WORKSPACE_PATH }}${{ env.REPO_NAME }}
           echo 'Here is a list of the files in ${{ env.WORKSPACE_PATH }}${{ env.REPO_NAME }}'
           ls -la
@@ -53,6 +57,11 @@ jobs:
           npm run build-hugo-for-prod
           "
 
+    - name: Set the default branch
+      run: |
+        echo 'GitHub Actions may warn about a master branch, so default to main'
+        git config --global init.defaultBranch main
+
     - name: Checkout target repository in a separate directory
       uses: actions/checkout@v4
       with:
@@ -61,31 +70,31 @@ jobs:
         path: 'target_repo'
         ref: main
 
-    - name: Sync site content to target repository in the runner
-      run: |
-        echo 'rsync'
-        rsync -av --delete public/ target_repo/
+    # - name: Sync site content to target repository in the runner
+    #   run: |
+    #     echo 'rsync'
+    #     rsync -av --delete public/ target_repo/
 
-    - name: Set correct git remote
-      run: |
-        git remote set-url origin https://github.com/${{ github.repository_owner }}/${{ env.TARGET_REPO }}.git
+    # - name: Set correct git remote
+    #   run: |
+    #     git remote set-url origin https://github.com/${{ github.repository_owner }}/${{ env.TARGET_REPO }}.git
   
-    - name: Custom Push to Target Repository
-      run: |
-        cd target_repo
-        echo 'git status before commit'
-        git status
-        echo 'List of items in the root /target repo:'
-        ls -la
-        git config user.name "GitHub Actions"
-        git config user.email "actions@github.com"
-        echo 'git add'
-        git add .
-        echo 'git status'
-        git status
-        echo 'git commit'
-        git commit -m "Update site content via GitHub Actions" || echo "No changes to commit"
-        echo 'push /target content to the target repo'
-        git push origin main
-      env:
-        GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no"
+    # - name: Custom Push to Target Repository
+    #   run: |
+    #     cd target_repo
+    #     echo 'git status before commit'
+    #     git status
+    #     echo 'List of items in the root /target repo:'
+    #     ls -la
+    #     git config user.name "GitHub Actions"
+    #     git config user.email "actions@github.com"
+    #     echo 'git add'
+    #     git add .
+    #     echo 'git status'
+    #     git status
+    #     echo 'git commit'
+    #     git commit -m "Update site content via GitHub Actions" || echo "No changes to commit"
+    #     echo 'push /target content to the target repo'
+    #     git push origin main
+    #   env:
+    #     GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no"
