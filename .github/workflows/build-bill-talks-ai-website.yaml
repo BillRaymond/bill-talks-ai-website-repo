@@ -18,6 +18,7 @@ jobs:
       BILL_TALKS_AI_PAT: ${{ secrets.BILL_TALKS_AI_PAT }} # Secret code created from developer settings
       REPO_OWNER: ${{ github.repository_owner }}
       TARGET_REPO: bill-talks-ai-website
+      BUILD_CONTAINER: temp-image:latest
 
     steps:
     - name: Checkout repository
@@ -34,14 +35,14 @@ jobs:
         context: .
         file: ./Dockerfile # Open the dockerfile in this GitHub repo
         load: true
-        tags: my-custom-image:latest # temporary image name and tag
+        tags: ${{ env.BUILD_CONTAINER }} # temporary image name and tag
 
     - name: Run Docker container, build with Hugo, and list public contents
       run: |
-        docker run --name temp-container -v ${{ github.workspace }}:${{ env.WORKSPACE_PATH }}${{ env.REPO_NAME }} my-custom-image:latest /bin/bash -c "\
+        docker run --name temp-container -v ${{ github.workspace }}:${{ env.WORKSPACE_PATH }}${{ env.REPO_NAME }} ${{ env.BUILD_CONTAINER }} /bin/bash -c "\
           cd ${{ env.WORKSPACE_PATH }}${{ env.REPO_NAME }} && 
           set -x; \
-          echo 'Here is a list of the files in ${{ env.WORKSPACE_PATH }}${{ env.REPO_NAME }}' && \
+          echo 'Dockerfile built. Here are the files in ${{ env.WORKSPACE_PATH }}${{ env.REPO_NAME }}' && \
           ls -la && \
           echo 'Install Bootstrap just in case files are missing' && \
           npm install bootstrap && \
