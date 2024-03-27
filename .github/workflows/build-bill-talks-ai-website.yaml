@@ -39,17 +39,22 @@ jobs:
 
     - name: Run Docker container, build with Hugo, and list public contents
       run: |
-        docker run --name temp-container -v ${{ github.workspace }}:${{ env.WORKSPACE_PATH }}${{ env.REPO_NAME }} ${{ env.BUILD_CONTAINER }} /bin/bash -c "\
-          cd ${{ env.WORKSPACE_PATH }}${{ env.REPO_NAME }} && 
-          set -x; \
-          echo 'Dockerfile built. Here are the files in ${{ env.WORKSPACE_PATH }}${{ env.REPO_NAME }}' && \
-          ls -la && \
-          echo 'Install Bootstrap just in case files are missing' && \
-          npm install bootstrap && \
-          echo 'Use package.json file to copy bootstrap files to the static folder' && \
-          npm run copy-bootstrap && \
-          echo 'Build the Hugo site' && \
-          hugo -s . -d public --gc --cleanDestinationDir --minify --logLevel debug"
+        docker run --name temp-container -v ${{ github.workspace }}:${{ env.WORKSPACE_PATH }}${{ env.REPO_NAME }} ${{ env.BUILD_CONTAINER }}
+          
+    - name: Build the Hugo website
+      run: |
+        echo 'set -x'
+        set -x;
+        echo cd into the workspace
+        cd ${{ env.WORKSPACE_PATH }}${{ env.REPO_NAME }}
+        echo 'list files in ${{ env.WORKSPACE_PATH }}${{ env.REPO_NAME }}'
+        ls -la
+        echo 'Install Bootstrap just in case files are missing'
+        npm install bootstrap
+        echo 'Use package.json file to copy bootstrap files to the static folder'
+        npm run copy-bootstrap
+        echo 'Build the Hugo site'
+        hugo -s . -d public --gc --cleanDestinationDir --minify --logLevel debug"
 
     - name: Checkout target repository in a separate directory
       uses: actions/checkout@v4
