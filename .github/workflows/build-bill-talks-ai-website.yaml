@@ -80,3 +80,5 @@ jobs:
         git push https://${{ secrets.BILL_TALKS_AI_PAT }}@github.com/BillRaymond/bill-talks-ai-website.git main
       env:
         GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no"
+
+        
