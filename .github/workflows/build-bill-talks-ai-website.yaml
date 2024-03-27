@@ -63,7 +63,6 @@ jobs:
 
     - name: Set correct git remote
       run: |
-        cd target_repo
         git remote set-url origin https://github.com/BillRaymond/bill-talks-ai-website.git
   
     - name: Custom Push to Target Repository
@@ -73,12 +72,14 @@ jobs:
         ls -la
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
+        echo 'git add'
         git add .
+        echo 'git status'
         git status
+        echo 'git commit'
         git commit -m "Update site content via GitHub Actions" || echo "No changes to commit"
         echo 'push /target content to the target repo'
         git push https://${{ secrets.BILL_TALKS_AI_PAT }}@github.com/BillRaymond/bill-talks-ai-website.git main
       env:
         GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no"
 
-        
