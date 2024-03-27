@@ -70,31 +70,31 @@ jobs:
         path: 'target_repo'
         ref: main
 
-    # - name: Sync site content to target repository in the runner
-    #   run: |
-    #     echo 'rsync'
-    #     rsync -av --delete public/ target_repo/
+    - name: Sync site content to target repository in the runner
+      run: |
+        echo 'rsync'
+        rsync -av --delete public/ target_repo/
 
-    # - name: Set correct git remote
-    #   run: |
-    #     git remote set-url origin https://github.com/${{ github.repository_owner }}/${{ env.TARGET_REPO }}.git
+    - name: Set correct git remote
+      run: |
+        git remote set-url origin https://github.com/${{ github.repository_owner }}/${{ env.TARGET_REPO }}.git
   
-    # - name: Custom Push to Target Repository
-    #   run: |
-    #     cd target_repo
-    #     echo 'git status before commit'
-    #     git status
-    #     echo 'List of items in the root /target repo:'
-    #     ls -la
-    #     git config user.name "GitHub Actions"
-    #     git config user.email "actions@github.com"
-    #     echo 'git add'
-    #     git add .
-    #     echo 'git status'
-    #     git status
-    #     echo 'git commit'
-    #     git commit -m "Update site content via GitHub Actions" || echo "No changes to commit"
-    #     echo 'push /target content to the target repo'
-    #     git push origin main
-    #   env:
-    #     GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no"
+    - name: Custom Push to Target Repository
+      run: |
+        cd target_repo
+        echo 'git status before commit'
+        git status
+        echo 'List of items in the root /target repo:'
+        ls -la
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        echo 'git add'
+        git add .
+        echo 'git status'
+        git status
+        echo 'git commit'
+        git commit -m "Update site content via GitHub Actions" || echo "No changes to commit"
+        echo 'push /target content to the target repo'
+        git push origin main
+      env:
+        GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no"
