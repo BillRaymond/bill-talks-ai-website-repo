@@ -69,6 +69,8 @@ jobs:
         rm -rf ./target-repo/*
         echo 'copy website files to the main branch'
         cp -r ./public/. ./target-repo/
+        echo 'files in the target repo'
+        ls -la ./target-repo
 
     # - name: Set the default branch
     #   run: |
