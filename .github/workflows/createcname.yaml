@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Setup Git Config
         run: |
-          git config --global user.name "BillRaymond"
+          git config --global user.name "bill.raymond"
           git config --global user.email "bill.raymond@cambermast.com"  # Replace with your GitHub email.
 
       - name: Clone Target Repo
