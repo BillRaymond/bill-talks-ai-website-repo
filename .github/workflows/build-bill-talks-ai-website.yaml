@@ -79,7 +79,7 @@ jobs:
         git config --global user.email "${{ github.actor }}@users.noreply.github.com"
         git add .
         git commit -m "Update website content"
-        git push "https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ env.REPO_OWNER }}/${{ env.TARGET_REPO }}.git" HEAD:main --force
+        git push "https://${{ env.BILL_TALKS_AI_PAT }}@github.com/${{ env.REPO_OWNER }}/${{ env.TARGET_REPO }}.git" HEAD:main --force
 
     # - name: Set the default branch
     #   run: |
