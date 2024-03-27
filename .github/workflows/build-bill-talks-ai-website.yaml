@@ -41,6 +41,7 @@ jobs:
     - name: Run Docker container, build with Hugo, and list public contents
       run: |
         docker run --name ${{ env.BUILD_TEMP_CONTAINER }} -v ${{ github.workspace }}:${{ env.WORKSPACE_PATH }}${{ env.REPO_NAME }} ${{ env.BUILD_TEMP_IMAGE }} /bin/bash -c "
+          git config --global --add safe.directory ${{ env.WORKSPACE_PATH }}${{ env.REPO_NAME }} # make it okay to run git commands here
           cd ${{ env.WORKSPACE_PATH }}${{ env.REPO_NAME }}
           echo 'Here is a list of the files in ${{ env.WORKSPACE_PATH }}${{ env.REPO_NAME }}'
           ls -la
