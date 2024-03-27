@@ -13,9 +13,9 @@ jobs:
   build-bill-talks-ai-website:
     runs-on: ubuntu-latest
     env:
-      WORKSPACE_PATH: /workspaces/
-      REPO_NAME: ${{ github.event.repository.name }}
-      BILL_TALKS_AI_PAT: ${{ secrets.BILL_TALKS_AI_PAT }}
+      WORKSPACE_PATH: /workspaces/ # when the action opens the dockerfile, use this as the top-level folder
+      REPO_NAME: ${{ github.event.repository.name }} # when the action opens the dockerfile, use this as the top-level sub-folder
+      BILL_TALKS_AI_PAT: ${{ secrets.BILL_TALKS_AI_PAT }} # Secret code created from developer settings
 
     steps:
     - name: Checkout repository
@@ -27,12 +27,12 @@ jobs:
       uses: docker/setup-buildx-action@v3
 
     - name: Build Docker image
-      uses: docker/build-push-action@v5
+      uses: docker/build-push-action@v5 # In this case, used for building the Dockerfile, not for pushing
       with:
         context: .
-        file: ./Dockerfile
+        file: ./Dockerfile # Open the dockerfile in this GitHub repo
         load: true
-        tags: my-custom-image:latest
+        tags: my-custom-image:latest # temporary image name and tag
 
     - name: Run Docker container, build with Hugo, and list public contents
       run: |
