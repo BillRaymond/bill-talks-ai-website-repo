@@ -11,8 +11,8 @@ jobs:
     steps:
       - name: Setup Git Config
         run: |
-          git config --global user.name "bill.raymond"
-          git config --global user.email "bill.raymond@cambermast.com"  # Replace with your GitHub email.
+          git config --global user.name "BillRaymond"
+          git config --global user.email "bil"  # Replace with your GitHub email.
 
       - name: Clone Target Repo
         run: |
@@ -25,10 +25,10 @@ jobs:
           echo "billtalksai.com" > ./target-repo/CNAME
 
       - name: Push Changes to Target Repo
+        env:
+          TARGET_REPO_TOKEN: ${{ secrets.BILL_TALKS_AI_PAT }}
         run: |
           cd target-repo
           git add CNAME
           git commit -m "Creating CNAME for custom domain"
-          git push
-        env:
-          GITHUB_TOKEN: ${{ secrets.BILL_TALKS_AI_PAT }}
+          git push https://x-access-token:${BILL_TALKS_AI_PAT}@github.com/BillRaymond/bill-talks-ai-website.git
