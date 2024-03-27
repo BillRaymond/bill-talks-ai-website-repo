@@ -61,9 +61,16 @@ jobs:
         echo 'rsync'
         rsync -av --delete public/ target_repo/
 
-    - name: Push changes to target repository
-      uses: ad-m/github-push-action@v0.8.0
-      with:
-        github_token: ${{ secrets.BILL_TALKS_AI_PAT }}
-        directory: target_repo
-        branch: main
+    - name: Custom Push to Target Repository
+      run: |
+        cd target_repo
+        echo 'Here is a list of the files in /target repo'
+        ls -la
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        git add .
+        git status
+        git commit -m "Update site content via GitHub Actions" || echo "No changes to commit"
+        git push origin main
+      env:
+        GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no"
