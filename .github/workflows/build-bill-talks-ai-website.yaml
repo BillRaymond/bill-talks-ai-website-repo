@@ -57,44 +57,57 @@ jobs:
           npm run build-hugo-for-prod
           "
 
-    - name: Set the default branch
-      run: |
-        echo 'GitHub Actions may warn about a master branch, so default to main'
-        git config --global init.defaultBranch main
-
-    - name: Checkout target repository in a separate directory
-      uses: actions/checkout@v2
+    - name: Checkout target repository for staging
+      uses: actions/checkout@v3
       with:
-        repository: '${{ github.repository_owner }}/${{ env.TARGET_REPO }}'
-        token: ${{ secrets.BILL_TALKS_AI_PAT }}
-        path: 'target_repo'
-        ref: main
+        repository: BillRaymond/bill-talks-ai-website
+        path: target-repo
 
-    - name: Sync site content to target repository in the runner
+    - name: Copy public website folder to target staging area
       run: |
-        echo 'rsync'
-        rsync -av --delete public/ target_repo/
+        echo 'remove files from the main branch'
+        rm -rf ./target-repo/*
+        echo 'copy website files to the main branch'
+        cp -r ./public/. ./target-repo/
 
-    - name: Set correct git remote
-      run: |
-        git remote set-url origin https://github.com/${{ github.repository_owner }}/${{ env.TARGET_REPO }}.git
+    # - name: Set the default branch
+    #   run: |
+    #     echo 'GitHub Actions may warn about a master branch, so default to main'
+    #     git config --global init.defaultBranch main
+
+    # - name: Checkout target repository in a separate directory
+    #   uses: actions/checkout@v2
+    #   with:
+    #     repository: '${{ github.repository_owner }}/${{ env.TARGET_REPO }}'
+    #     token: ${{ secrets.BILL_TALKS_AI_PAT }}
+    #     path: 'target_repo'
+    #     ref: main
+
+    # - name: Sync site content to target repository in the runner
+    #   run: |
+    #     echo 'rsync'
+    #     rsync -av --delete public/ target_repo/
+
+    # - name: Set correct git remote
+    #   run: |
+    #     git remote set-url origin https://github.com/${{ github.repository_owner }}/${{ env.TARGET_REPO }}.git
   
-    - name: Custom Push to Target Repository
-      run: |
-        cd target_repo
-        echo 'git status before commit'
-        git status
-        echo 'List of items in the root /target repo:'
-        ls -la
-        git config user.name "GitHub Actions"
-        git config user.email "actions@github.com"
-        echo 'git add'
-        git add .
-        echo 'git status'
-        git status
-        echo 'git commit'
-        git commit -m "Update site content via GitHub Actions" || echo "No changes to commit"
-        echo 'push /target content to the target repo'
-        git push origin main
-      env:
-        GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no"
+    # - name: Custom Push to Target Repository
+    #   run: |
+    #     cd target_repo
+    #     echo 'git status before commit'
+    #     git status
+    #     echo 'List of items in the root /target repo:'
+    #     ls -la
+    #     git config user.name "GitHub Actions"
+    #     git config user.email "actions@github.com"
+    #     echo 'git add'
+    #     git add .
+    #     echo 'git status'
+    #     git status
+    #     echo 'git commit'
+    #     git commit -m "Update site content via GitHub Actions" || echo "No changes to commit"
+    #     echo 'push /target content to the target repo'
+    #     git push origin main
+    #   env:
+    #     GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no"
