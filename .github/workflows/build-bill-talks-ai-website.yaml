@@ -54,6 +54,7 @@ jobs:
         repository: 'BillRaymond/bill-talks-ai-website'
         token: ${{ secrets.BILL_TALKS_AI_PAT }}
         path: 'target_repo'
+        ref: main
 
     - name: Sync site content to target repository
       run: |
