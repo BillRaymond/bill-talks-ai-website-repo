@@ -68,6 +68,8 @@ jobs:
     - name: Custom Push to Target Repository
       run: |
         cd target_repo
+        echo 'git status before commit'
+        git status
         echo 'List of items in the root /target repo:'
         ls -la
         git config user.name "GitHub Actions"
