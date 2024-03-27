@@ -58,14 +58,10 @@ jobs:
       run: |
         echo 'rsync'
         rsync -av --delete public/ target_repo/
-        echo 'cd to target_repo'
-        cd target_repo
-        echo 'configure git'
-        git config user.name 'GitHub Actions'
-        git config user.email 'actions@github.com'
-        echo 'git add'
-        git add .
-        echo 'git commit'
-        git commit -m 'Update site content' || echo "No changes to commit"
-        echo 'git push to target_repo'
-        git push https://${{ secrets.BILL_TALKS_AI_PAT }}@github.com/BillRaymond/bill-talks-ai-website.git main --force
+
+    - name: Push changes to target repository
+      uses: ad-m/github-push-action@v0.8.0
+      with:
+        github_token: ${{ secrets.BILL_TALKS_AI_PAT }}
+        directory: target_repo
+        branch: main
