@@ -9,26 +9,10 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - name: Setup Git Config
-        run: |
-          git config --global user.name "BillRaymond"
-          git config --global user.email "bil"  # Replace with your GitHub email.
-
-      - name: Clone Target Repo
-        run: |
-          git clone https://github.com/BillRaymond/bill-talks-ai-website.git target-repo
-        env:
-          GIT_SSH_COMMAND: "ssh -v"
-
-      - name: Create CNAME File
-        run: |
-          echo "billtalksai.com" > ./target-repo/CNAME
-
-      - name: Push Changes to Target Repo
-        env:
-          TARGET_REPO_TOKEN: ${{ secrets.BILL_TALKS_AI_PAT }}
-        run: |
-          cd target-repo
-          git add CNAME
-          git commit -m "Creating CNAME for custom domain"
-          git push https://x-access-token:${BILL_TALKS_AI_PAT}@github.com/BillRaymond/bill-talks-ai-website.git
+        - name: Authenticate with GitHub
+          run: |
+            # Use the PAT to authenticate for git operations
+            git config --global user.email "you@example.com"
+            git config --global user.name "Your Name"
+            echo "BILL_TALKS_AI_PAT=${{ secrets.BILL_TALKS_AI_PAT }}" >> $GITHUB_ENV
+      
