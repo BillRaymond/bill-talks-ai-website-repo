@@ -68,4 +68,4 @@ jobs:
         echo 'git commit'
         git commit -m 'Update site content' || echo "No changes to commit"
         echo 'git push origin main --force'
-        git push origin main --force
+        git push https://${TARGET_REPO_ACCESS_TOKEN}@github.com/BillRaymond/bill-talks-ai-website.git main --force
