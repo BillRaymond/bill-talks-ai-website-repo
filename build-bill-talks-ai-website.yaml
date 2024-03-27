@@ -15,6 +15,7 @@ jobs:
     env:
       WORKSPACE_PATH: /workspaces/
       REPO_NAME: ${{ github.event.repository.name }}
+      BILL_TALKS_AI_PAT: ${{ secrets.BILL_TALKS_AI_PAT }}
 
     steps:
     - name: Checkout repository
