@@ -16,7 +16,9 @@ jobs:
       WORKSPACE_PATH: /workspaces/ # when the action opens the dockerfile, use this as the top-level folder
       REPO_NAME: ${{ github.event.repository.name }} # when the action opens the dockerfile, use this as the top-level sub-folder
       BILL_TALKS_AI_PAT: ${{ secrets.BILL_TALKS_AI_PAT }} # Secret code created from developer settings
-      GITHUB_ACCOUNT: 
+      REPO_OWNER: ${{ github.repository_owner }}
+      TARGET_REPO: bill-talks-ai-website
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -51,7 +53,7 @@ jobs:
     - name: Checkout target repository in a separate directory
       uses: actions/checkout@v4
       with:
-        repository: 'BillRaymond/bill-talks-ai-website'
+        repository: '${{ github.repository_owner }}/${{ TARGET_REPO }}'
         token: ${{ secrets.BILL_TALKS_AI_PAT }}
         path: 'target_repo'
         ref: main
@@ -63,7 +65,7 @@ jobs:
 
     - name: Set correct git remote
       run: |
-        git remote set-url origin https://github.com/BillRaymond/bill-talks-ai-website.git
+        git remote set-url origin https://github.com/${{ github.repository_owner }}/${{ TARGET_REPO }}.git
   
     - name: Custom Push to Target Repository
       run: |
@@ -81,7 +83,7 @@ jobs:
         echo 'git commit'
         git commit -m "Update site content via GitHub Actions" || echo "No changes to commit"
         echo 'push /target content to the target repo'
-        git push https://${{ secrets.BILL_TALKS_AI_PAT }}@github.com/BillRaymond/bill-talks-ai-website.git main
+        git push origin main
       env:
         GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no"
 
