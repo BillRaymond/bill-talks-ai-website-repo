@@ -53,7 +53,7 @@ jobs:
     - name: Checkout target repository in a separate directory
       uses: actions/checkout@v4
       with:
-        repository: '${{ github.repository_owner }}/${{ TARGET_REPO }}'
+        repository: '${{ github.repository_owner }}/${{ env.TARGET_REPO }}'
         token: ${{ secrets.BILL_TALKS_AI_PAT }}
         path: 'target_repo'
         ref: main
@@ -65,7 +65,7 @@ jobs:
 
     - name: Set correct git remote
       run: |
-        git remote set-url origin https://github.com/${{ github.repository_owner }}/${{ TARGET_REPO }}.git
+        git remote set-url origin https://github.com/${{ github.repository_owner }}/${{ env.TARGET_REPO }}.git
   
     - name: Custom Push to Target Repository
       run: |
