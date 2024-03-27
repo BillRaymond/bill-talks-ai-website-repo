@@ -40,8 +40,10 @@ jobs:
 
     - name: Run Docker container, build with Hugo, and list public contents
       run: |
-        docker run --name ${{ env.BUILD_TEMP_CONTAINER }} -v ${{ github.workspace }}:${{ env.WORKSPACE_PATH }}${{ env.REPO_NAME }} ${{ env.BUILD_TEMP_IMAGE }}
-          
+        echo 'Create a temporary container from the Dockerfile in the repo'
+        echo 'Then build the image and detach (-d) it so you can run additional commands'
+        docker run --name ${{ env.BUILD_TEMP_CONTAINER }} -d -v ${{ github.workspace }}:${{ env.WORKSPACE_PATH }}${{ env.REPO_NAME }} ${{ env.BUILD_TEMP_IMAGE }}
+
     - name: Build the Hugo website
       run: |
         docker exec -i ${{ env.BUILD_TEMP_CONTAINER }} sh << 'EOF'
