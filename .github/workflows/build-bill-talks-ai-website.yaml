@@ -60,7 +60,8 @@ jobs:
     - name: Checkout target repository for staging
       uses: actions/checkout@v4
       with:
-        persist-credentials: false
+        # persist-credentials: false # you can't push without this
+        token: ${{ env.BILL_TALKS_AI_PAT }}
         repository: ${{ env.REPO_OWNER }}/${{ env.TARGET_REPO }}
         path: target-repo
 
@@ -80,4 +81,5 @@ jobs:
         git config --global user.email "${{ env.REPO_OWNER }}@noreply.github.com"
         git add .
         git commit --allow-empty -m "Update website content"
-        git push "https://${{ secrets.BILL_TALKS_AI_PAT }}@github.com/${{ env.REPO_OWNER }}/${{ env.TARGET_REPO }}.git" HEAD:main --force
+        # git push "https://${{ secrets.BILL_TALKS_AI_PAT }}@github.com/${{ env.REPO_OWNER }}/${{ env.TARGET_REPO }}.git" HEAD:main --force
+        git push HEAD:main --force

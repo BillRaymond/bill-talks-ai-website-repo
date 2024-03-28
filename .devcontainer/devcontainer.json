@@ -39,7 +39,8 @@
 				"golang.Go",
 				"budparr.language-hugo-vscode",
 				"tamasfe.even-better-toml",
-				"akmittal.hugofy"
+				"akmittal.hugofy",
+				"aaron-bond.better-comments"
 			]
 		}
 	}
