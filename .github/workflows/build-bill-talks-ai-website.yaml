@@ -1,3 +1,10 @@
+# This workflow builds the BillTalksAI.com website.
+# Open this repo's Dockerfile to:
+#  1. Build the source:
+#*     repo bill-talks-ai-website-repo
+#  2. And copy files to the target:
+#*     repo bill-talks-ai-website
+#  3. At any time along the way, run any required scripts
 name: Build Bill Talks AI website
 
 on:
@@ -7,7 +14,7 @@ on:
 
 concurrency:
   group: ${{ github.ref }}
-  cancel-in-progress: true # this workflow stops other concurrent workflows from running
+  cancel-in-progress: true # stop this workflow from running if another push comes in
 
 jobs:
   build-bill-talks-ai-website:
@@ -15,26 +22,28 @@ jobs:
     permissions:
       contents: write # Allows the workflow to write to the target repo
     env:
-      WORKSPACE_PATH: /workspaces/ # when the action opens the dockerfile, use this as the top-level folder
+      WORKSPACE_PATH: /workspaces/ # when the action opens the source dockerfile, use this as the top-level folder
       REPO_NAME: ${{ github.event.repository.name }} # when the action opens the dockerfile, use this as the top-level sub-folder
-      BILL_TALKS_AI_PAT: ${{ secrets.BILL_TALKS_AI_PAT }} # Secret code created from developer settings
+      BILL_TALKS_AI_PAT: ${{ secrets.BILL_TALKS_AI_WEBSITE_PAT }} # Secret code created from developer settings
       REPO_OWNER: ${{ github.repository_owner }}
       TARGET_REPO: bill-talks-ai-website
       BUILD_TEMP_CONTAINER: temp-container
       BUILD_TEMP_IMAGE: temp-image:latest
-      WEBSITE_LOCATION: ./public
+      SOURCE_WEBSITE_LOCATION: ./public
+      TARGET_TEMP_REPO_FOLDER: temp-public 
 
     steps:
-    - name: Checkout repository
+    - name: Checkout source repo
       uses: actions/checkout@v4
-      with:
-        submodules: true # Fetch Git submodules that Hugo might use
+      #! See if we can remove these two lines:
+      #! with:
+      #!   submodules: true # Fetch Git submodules that Hugo might use
 
-    - name: Set up Docker Buildx
+    - name: Set up Docker Buildx # Build for AMD64 or ARM64
       uses: docker/setup-buildx-action@v3
 
-    - name: Build Docker image
-      uses: docker/build-push-action@v5 # In this case, used for building the Dockerfile, not for pushing
+    - name: Build the source Docker image
+      uses: docker/build-push-action@v5 # Only the "build" part of this action is used
       with:
         context: .
         file: ./Dockerfile # Open the dockerfile in this GitHub repo
@@ -49,37 +58,48 @@ jobs:
           cd ${{ env.WORKSPACE_PATH }}${{ env.REPO_NAME }}
           echo 'Here is a list of the files in ${{ env.WORKSPACE_PATH }}${{ env.REPO_NAME }}'
           ls -la
-          echo 'Install Bootstrap just in case files are missing'
+          echo 'Use package.json script to ensure bootstrap is installed'
           npm run install-bootstrap
-          echo 'Use package.json file to copy bootstrap files to the static folder'
+          echo 'Use package.json script to copy bootstrap files to a static folder'
           npm run copy-bootstrap
-          echo 'Build the Hugo site'
+          echo 'Use package.json script to build the Hugo site'
           npm run build-hugo-for-prod
           "
 
-    - name: Checkout target repository for staging
+    - name: Checkout target repo for staging
       uses: actions/checkout@v4
       with:
-        # persist-credentials: false # you can't push without this
-        token: ${{ env.BILL_TALKS_AI_PAT }}
+        #! persist-credentials: false # should be able to remove since we are using the token
+        token: ${{ env.BILL_TALKS_AI_PAT }} #* Required in order to push the code later in a future step
         repository: ${{ env.REPO_OWNER }}/${{ env.TARGET_REPO }}
-        path: target-repo
+        path: ${{ env.TARGET_TEMP_REPO_FOLDER }} # files will copy to root of main, but use this as a temp address folder
 
-    - name: Copy public website folder to target staging area
-      run: |
-        echo 'remove files from the main branch'
-        rm -rf ./target-repo/*
-        echo 'copy website files to the main branch'
-        cp -r ./public/. ./target-repo/
+    - name: Copy source public website folder to a target staging folder
+      run: | # 
+        echo 'remove all files from the target main branch'
+        rm -rf ./${{ env.TARGET_TEMP_REPO_FOLDER }}/*
+        echo 'copy source website files to the target repo'
+        cp -r ./public/. ./${{ env.TARGET_TEMP_REPO_FOLDER }}/
         echo 'files in the target repo'
-        ls -la ./target-repo
+        ls -la ./${{ env.TARGET_TEMP_REPO_FOLDER }}
 
-    - name: Commit and push changes
+    - name: Commit temporary target folder
       run: |
-        cd target-repo
+        # todo: Maybe add git checkout main
+        echo 'cd into temporary target folder'
+        cd ${{ env.TARGET_TEMP_REPO_FOLDER }}
+        echo 'configure git user name'
         git config --global user.name "${{ env.REPO_OWNER }}"
+        echo 'configure fir user email'
         git config --global user.email "${{ env.REPO_OWNER }}@noreply.github.com"
+        echo 'git add target website files'
         git add .
+        echo 'git commit all files, even if this is an empty commit'
+        #* Use allow-empty otherwise we may not push code to the target source if no change
         git commit --allow-empty -m "Update website content"
-        # git push "https://${{ secrets.BILL_TALKS_AI_PAT }}@github.com/${{ env.REPO_OWNER }}/${{ env.TARGET_REPO }}.git" HEAD:main --force
+
+    - name: Push temporary target folder to target main
+      run: |
+        #! old code. Remove this? git push "https://${{ secrets.BILL_TALKS_AI_PAT }}@github.com/${{ env.REPO_OWNER }}/${{ env.TARGET_REPO }}.git" HEAD:main --force
+        echo 'git push target website files to the target repo for prod'
         git push --force
