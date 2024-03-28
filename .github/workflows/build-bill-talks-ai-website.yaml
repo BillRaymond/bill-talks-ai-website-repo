@@ -83,7 +83,7 @@ jobs:
         echo 'list files in the target repo'
         ls -la ./${{ env.TARGET_TEMP_REPO_FOLDER }}
 
-    - name: Commit temporary target folder
+    - name: Commit temporary target folder and push to target's main root
       run: |
         # todo: Maybe add git checkout main
         echo 'cd into temporary target folder'
@@ -97,9 +97,6 @@ jobs:
         echo 'git commit all files, even if this is an empty commit'
         #* Use allow-empty otherwise we may not push code to the target source if no change
         git commit --allow-empty -m "Update website content"
-
-    - name: Push temporary target folder to target main
-      run: |
         #! old code. Remove this? git push "https://${{ secrets.BILL_TALKS_AI_PAT }}@github.com/${{ env.REPO_OWNER }}/${{ env.TARGET_REPO }}.git" HEAD:main --force
         echo 'list files in the target repo'
         ls -la ./${{ env.TARGET_TEMP_REPO_FOLDER }}
