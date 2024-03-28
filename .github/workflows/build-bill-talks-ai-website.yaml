@@ -80,7 +80,7 @@ jobs:
         rm -rf ./${{ env.TARGET_TEMP_REPO_FOLDER }}/*
         echo 'copy source website files to the target repo'
         cp -r ./public/. ./${{ env.TARGET_TEMP_REPO_FOLDER }}/
-        echo 'files in the target repo'
+        echo 'list files in the target repo'
         ls -la ./${{ env.TARGET_TEMP_REPO_FOLDER }}
 
     - name: Commit temporary target folder
@@ -101,5 +101,7 @@ jobs:
     - name: Push temporary target folder to target main
       run: |
         #! old code. Remove this? git push "https://${{ secrets.BILL_TALKS_AI_PAT }}@github.com/${{ env.REPO_OWNER }}/${{ env.TARGET_REPO }}.git" HEAD:main --force
+        echo 'list files in the target repo'
+        ls -la ./${{ env.TARGET_TEMP_REPO_FOLDER }}
         echo 'git push target website files to the target repo for prod'
         git push --force
