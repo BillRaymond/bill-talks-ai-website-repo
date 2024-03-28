@@ -1,4 +1,4 @@
-baseURL: 'https://billraymond.github.io/bill-talks-ai-website/'
+baseURL: 'https://billraymond.github.io/'
 languageCode: 'en-us'
 title: 'Bill Talks AI'
 theme: 'bill-talks-ai'
