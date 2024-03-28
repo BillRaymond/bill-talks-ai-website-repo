@@ -82,7 +82,7 @@ jobs:
         git config --global user.name "Bill Raymond" # TODO: Put back env
         git config --global user.email "bill.raymond@cambermast.com" # TODO: Put back env
         git add .
-        git commit -m "Update website content"
+        git commit --allow-empty -m "Update website content"
         # TODO: Put back env:
         # git push "https://${{ secrets.BILL_TALKS_AI_PAT }}@github.com/billraymond/bill-talks-ai-website.git" HEAD:main --force
         git push "https://${{ secrets.BILL_TALKS_AI_PAT }}@github.com/billraymond/bill-talks-ai-website.git" HEAD:main --force
