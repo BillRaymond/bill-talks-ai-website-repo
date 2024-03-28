@@ -57,11 +57,11 @@ jobs:
           npm run build-hugo-for-prod
           "
 
-    - name: Checkout target repository for staging
-      uses: actions/checkout@v4
-      with:
-        repository: ${{ env.REPO_OWNER }}/${{ env.TARGET_REPO }}
-        path: target-repo
+    # - name: Checkout target repository for staging
+    #   uses: actions/checkout@v4
+    #   with:
+    #     repository: ${{ env.REPO_OWNER }}/${{ env.TARGET_REPO }}
+    #     path: target-repo
 
     - name: Copy public website folder to target staging area
       run: |
@@ -74,11 +74,15 @@ jobs:
 
     - name: Commit and push changes
       run: |
-        cd ./target-repo
-        git config --global user.name "BillRaymond" # TODO: Put back env
-        git config --global user.email "Bill.Raymond@Cambermast.com" # TODO: Put back env
+        git clone https://github.com/billraymond/bill-talks-ai-website
+        cd bill-talks-ai-website
+        echo touch somefile > somefile.txt
+        git config --global user.name "Bill Raymond" # TODO: Put back env
+        git config --global user.email "bill.raymond@cambermast.com" # TODO: Put back env
         git add .
         git commit -m "Update website content"
         # TODO: Put back env:
-        git push "https://${{ secrets.BILL_TALKS_AI_PAT }}@github.com/BillRaymond/bill-talks-ai-website.git" HEAD:main --force
+        # git push "https://${{ secrets.BILL_TALKS_AI_PAT }}@github.com/billraymond/bill-talks-ai-website.git" HEAD:main --force
+        git push "https://${{ secrets.BILL_TALKS_AI_PAT }}@github.com/billraymond/bill-talks-ai-website.git" HEAD:main
+        
 
