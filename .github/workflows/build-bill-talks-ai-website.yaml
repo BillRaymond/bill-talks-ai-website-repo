@@ -75,9 +75,10 @@ jobs:
     - name: Commit and push changes
       run: |
         cd ./target-repo
-        git config --global user.name "BillRaymond"
-        git config --global user.email "Bill.Raymond@Cambermast.com"
+        git config --global user.name "BillRaymond" # TODO: Put back env
+        git config --global user.email "Bill.Raymond@Cambermast.com" # TODO: Put back env
         git add .
         git commit -m "Update website content"
+        # TODO: Put back env:
         git push "https://${{ secrets.BILL_TALKS_AI_PAT }}@github.com/BillRaymond/bill-talks-ai-website.git" HEAD:main --force
 
