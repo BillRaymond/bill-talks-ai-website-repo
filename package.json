@@ -6,7 +6,8 @@
   "scripts": {
     "install-bootstrap": "npm install bootstrap",
     "copy-bootstrap": "cp -r node_modules/bootstrap/dist/ static/bootstrap/",
-    "build-hugo-for-prod": "hugo -s . -d public --gc --cleanDestinationDir --minify --logLevel debug"
+    "build-hugo-for-prod": "hugo -s . -d public --gc --cleanDestinationDir --minify --logLevel debug",
+    "hugo-serve": "hugo server --watch --disableFastRender"
   },
   "keywords": [],
   "author": "",
