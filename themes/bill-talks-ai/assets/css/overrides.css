@@ -1,0 +1,36 @@
+/** 
+  * ! This site uses bootstrap. You can override or create styles with this css file 
+**/
+
+
+
+
+
+/* Quick test (uncomment to see if site changes): */
+/* body {background-color: blue;} */
+
+/* Original overrides from initial theme's main.css: */
+/* body {
+  color: #222;
+  font-family: sans-serif;
+  line-height: 1.5;
+  margin: 1rem;
+  max-width: 768px;
+  background-color: red;
+}
+
+header {
+  border-bottom: 1px solid #222;
+  margin-bottom: 1rem;
+}
+
+footer {
+  border-top: 1px solid #222;
+  margin-top: 1rem;
+}
+
+a {
+  color: #00e;
+  text-decoration: none;
+
+} */
