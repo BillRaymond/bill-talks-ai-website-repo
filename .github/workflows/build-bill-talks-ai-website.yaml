@@ -90,7 +90,7 @@ jobs:
         cd ${{ env.TARGET_TEMP_REPO_FOLDER }}
         echo 'configure git user name'
         git config --global user.name "${{ env.REPO_OWNER }}"
-        echo 'configure fir user email'
+        echo 'configure git user email'
         git config --global user.email "${{ env.REPO_OWNER }}@noreply.github.com"
         echo 'git add target website files'
         git add .
@@ -99,6 +99,6 @@ jobs:
         git commit --allow-empty -m "Update website content"
         #! old code. Remove this? git push "https://${{ secrets.BILL_TALKS_AI_PAT }}@github.com/${{ env.REPO_OWNER }}/${{ env.TARGET_REPO }}.git" HEAD:main --force
         echo 'list files in the target repo'
-        ls -la ./${{ env.TARGET_TEMP_REPO_FOLDER }}
+        ls -la
         echo 'git push target website files to the target repo for prod'
-        git push --force
+        git push --force # push code to target's main (root) branch
