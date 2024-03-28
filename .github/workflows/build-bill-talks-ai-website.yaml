@@ -85,4 +85,4 @@ jobs:
         git commit -m "Update website content"
         # TODO: Put back env:
         # git push "https://${{ secrets.BILL_TALKS_AI_PAT }}@github.com/billraymond/bill-talks-ai-website.git" HEAD:main --force
-        git push "https://${{ secrets.BILL_TALKS_AI_PAT }}@github.com/billraymond/bill-talks-ai-website.git" HEAD:main
+        git push "https://${{ secrets.BILL_TALKS_AI_PAT }}@github.com/billraymond/bill-talks-ai-website.git" HEAD:main --force
