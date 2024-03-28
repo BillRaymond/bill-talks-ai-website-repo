@@ -68,13 +68,12 @@ jobs:
 
     - name: Checkout target repo for staging
       uses: actions/checkout@v4
-      with:
-        #! persist-credentials: false # should be able to remove since we are using the token
+      with: # you can add ref: 'branch' for a specific branch
         token: ${{ env.BILL_TALKS_AI_PAT }} #* Required in order to push the code later in a future step
         repository: ${{ env.REPO_OWNER }}/${{ env.TARGET_REPO }}
-        path: ${{ env.TARGET_TEMP_REPO_FOLDER }} # files will copy to root of main, but use this as a temp address folder
+        path: ${{ env.TARGET_TEMP_REPO_FOLDER }} # checkout to a temporary target folder to copy files
 
-    - name: Copy source public website folder to a target staging folder
+    - name: Copy source public website folder to the target staging folder
       run: | # 
         echo 'remove all files from the target main branch'
         rm -rf ./${{ env.TARGET_TEMP_REPO_FOLDER }}/*
@@ -83,6 +82,8 @@ jobs:
         echo 'list files in the target repo'
         ls -la ./${{ env.TARGET_TEMP_REPO_FOLDER }}
 
+    #* Since target checkout and commit/push are in different locations
+    #* You must make sure you use with: token: in the checkout target job
     - name: Commit temporary target folder and push to target's main root
       run: |
         # todo: Maybe add git checkout main
@@ -97,8 +98,7 @@ jobs:
         echo 'git commit all files, even if this is an empty commit'
         #* Use allow-empty otherwise we may not push code to the target source if no change
         git commit --allow-empty -m "Update website content"
-        #! old code. Remove this? git push "https://${{ secrets.BILL_TALKS_AI_PAT }}@github.com/${{ env.REPO_OWNER }}/${{ env.TARGET_REPO }}.git" HEAD:main --force
         echo 'list files in the target repo'
         ls -la
         echo 'git push target website files to the target repo for prod'
-        git push --force # push code to target's main (root) branch
+        git push --force # push code to the target repo
