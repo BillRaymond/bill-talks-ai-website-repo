@@ -4,13 +4,20 @@ title: "My New Hugo Site"
 
 menus:
   main:
-    - name: "Home"
+    - identifier: "home"
+      name: "Home"
       pageRef: "/"
       weight: 10
-    - name: "Posts"
+    - identifier: "posts"
+      name: "Posts"
       pageRef: "/posts"
       weight: 20
-    - name: "Tags"
+    - identifier: "blog"
+      name: "Blog"
+      pageRef: "/blog"
+      parent: "posts"
+    - identifier: "tags"
+      name: "Tags"
       pageRef: "/tags"
       weight: 30
 

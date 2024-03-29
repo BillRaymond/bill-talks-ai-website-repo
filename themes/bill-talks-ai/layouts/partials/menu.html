@@ -6,46 +6,51 @@ Renders a menu for the given menu ID.
 
 @example: {{ partial "menu.html" (dict "menuID" "main" "page" .) }}
 */}}
-
+{{- /* Main navigation template with Bootstrap collapsible hamburger menu and nav-pills */ -}}
 {{- $page := .page }}
 {{- $menuID := .menuID }}
 
 {{- with index site.Menus $menuID }}
-  <nav>
-    <ul>
-      {{- partial "inline/menu/walk.html" (dict "page" $page "menuEntries" .) }}
-    </ul>
-  </nav>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav nav-pills mt-3">
+        {{- partial "inline/menu/walk-bootstrap-pills.html" (dict "page" $page "menuEntries" .) }}
+      </div>
+    </div>
+  </div>
+</nav>
 {{- end }}
 
-{{- define "partials/inline/menu/walk.html" }}
-  {{- $page := .page }}
-  {{- range .menuEntries }}
-    {{- $attrs := dict "href" .URL }}
-    {{- if $page.IsMenuCurrent .Menu . }}
-      {{- $attrs = merge $attrs (dict "class" "active" "aria-current" "page") }}
-    {{- else if $page.HasMenuCurrent .Menu .}}
-      {{- $attrs = merge $attrs (dict "class" "ancestor" "aria-current" "true") }}
-    {{- end }}
-    {{- $name := .Name }}
-    {{- with .Identifier }}
-      {{- with T . }}
-        {{- $name = . }}
-      {{- end }}
-    {{- end }}
-    <li>
-      <a
-        {{- range $k, $v := $attrs }}
-          {{- with $v }}
-            {{- printf " %s=%q" $k $v | safeHTMLAttr }}
-          {{- end }}
-        {{- end -}}
-      >{{ $name }}</a>
-      {{- with .Children }}
-        <ul>
-          {{- partial "inline/menu/walk.html" (dict "page" $page "menuEntries" .) }}
-        </ul>
-      {{- end }}
-    </li>
+{{- define "partials/inline/menu/walk-bootstrap-pills.html" }}
+{{- $page := .page }}
+{{- range .menuEntries }}
+  {{- $isActive := $page.IsMenuCurrent .Menu . }}
+  {{- $isAncestor := $page.HasMenuCurrent .Menu . }}
+  {{- $class := "nav-link me-3" }}
+  {{- if $isActive }}
+    {{- $class = "nav-link active me-3" }}
+  {{- else if $isAncestor }}
+    {{- $class = "nav-link ancestor me-3" }}
   {{- end }}
+  {{- if .Children }}
+  <li class="nav-item dropdown">
+    <a class="{{ $class }} dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
+      {{ .Name }}
+    </a>
+    <ul class="dropdown-menu">
+      {{- partial "inline/menu/walk-bootstrap-pills.html" (dict "page" $page "menuEntries" .Children) }}
+    </ul>
+  </li>
+  {{- else }}
+  <li class="nav-item">
+    <a class="{{ $class }}" href="{{ .URL }}">
+      {{ .Name }}
+    </a>
+  </li>
+  {{- end }}
+{{- end }}
 {{- end }}
