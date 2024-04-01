@@ -33,17 +33,26 @@ jobs:
       TARGET_TEMP_REPO_FOLDER: temp-public 
 
     steps:
+    - name: Display environment variables
+      run: |
+        echo 'WORKSPACE_PATH: /workspaces/'
+        echo 'REPO_NAME: ${{ github.event.repository.name }}'
+        echo 'BILL_TALKS_AI_PAT: ${{ secrets.BILL_TALKS_AI_WEBSITE_PAT }}'
+        echo 'REPO_OWNER: ${{ github.repository_owner }}'
+        echo 'TARGET_REPO: bill-talks-ai-website'
+        echo 'BUILD_TEMP_CONTAINER: temp-container'
+        echo 'BUILD_TEMP_IMAGE: temp-image:latest'
+        echo 'SOURCE_WEBSITE_LOCATION: ./public'
+        echo 'TARGET_TEMP_REPO_FOLDER: temp-public'
+
     - name: Checkout source repo
       uses: actions/checkout@v4
-      #! See if we can remove these two lines:
-      #! with:
-      #!   submodules: true # Fetch Git submodules that Hugo might use
 
     - name: Set up Docker Buildx # Build for AMD64 or ARM64
       uses: docker/setup-buildx-action@v3
 
     - name: Build the source Docker image
-      uses: docker/build-push-action@v5 # Only the "build" part of this action is used
+      uses: docker/build-push-action@v5 # This workflow uses "build", not "push"
       with:
         context: .
         file: ./Dockerfile # Open the dockerfile in this GitHub repo
